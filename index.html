@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #0CC0DF; /* Background color */
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 40%;
+            max-width: 800px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Shadow */
+            padding: 20px;
+        }
+        img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            cursor: pointer;
+            border: 5px solid #0CC0DF; /* Outer blue border color */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .qa-box {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .question {
+            font-size: 1.4em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        .answer {
+            font-size: 1.2em;
+            color: #555;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3); /* Text shadow */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img id="quizImage" src="https://i.imgur.com/HDU8HOa.png" alt="Quiz Image">
+        <div class="qa-box">
+            <div id="question" class="question">Click the image to get a question!</div>
+            <div id="answer" class="answer"></div>
+        </div>
+    </div>
+    
+    <script>
+        const questionsAndAnswers = [
+            { question: "Which show features a group of strangers living together in a house under constant surveillance?", answer: "Big Brother" },
+            { question: "What is the name of the UK talent show where contestants perform in front of a panel of judges?", answer: "Britain's Got Talent" },
+            { question: "Which reality TV show involves celebrities taking part in various physical and mental challenges in a jungle?", answer: "I'm a Celebrity... Get Me Out of Here!" },
+            { question: "What is the name of the UK dating show where singles live together and compete for the title of 'Love Island'?", answer: "Love Island" },
+            { question: "Which reality TV show involves celebrities living in a house and participating in various tasks, often with hidden cameras?", answer: "Celebrity Big Brother" },
+            { question: "What is the name of the UK show where families compete against each other in various games and challenges?", answer: "The Family Chase" },
+            { question: "Which reality show features aspiring chefs competing in a high-pressure kitchen environment?", answer: "MasterChef" },
+            { question: "What is the name of the UK show where contestants try to sell their business ideas to a panel of wealthy investors?", answer: "Dragons' Den" },
+            { question: "Which UK reality show follows the lives of a group of people living in a specific area, often in a glamorous setting?", answer: "The Only Way Is Essex" },
+            { question: "What is the name of the UK show where couples compete in ballroom dancing challenges?", answer: "Strictly Come Dancing" },
+            { question: "Which show features contestants racing across the world, completing challenges in various countries?", answer: "The Amazing Race" },
+            { question: "What is the name of the UK reality show where aspiring models compete for a modeling contract?", answer: "Britain's Next Top Model" },
+            { question: "Which UK show involves participants living in a house and facing elimination each week based on audience votes?", answer: "Big Brother" },
+            { question: "What is the name of the reality show where celebrities are paired with professional dancers to compete in dance challenges?", answer: "Strictly Come Dancing" },
+            { question: "Which reality show involves a group of celebrities staying in a remote location and participating in various survival tasks?", answer: "I'm a Celebrity... Get Me Out of Here!" },
+            { question: "What is the name of the show where contestants attempt to improve their health and fitness under the guidance of experts?", answer: "The Biggest Loser" },
+            { question: "Which UK reality show features a group of contestants competing in a series of physical and mental challenges for a cash prize?", answer: "The Challenge" },
+            { question: "What is the name of the UK reality TV show where contestants attempt to win a large cash prize by answering general knowledge questions?", answer: "Who Wants to Be a Millionaire?" },
+            { question: "Which reality show features participants living together and competing in various tasks to win a cash prize?", answer: "The Circle" },
+            { question: "What is the name of the show where contestants are given the chance to win a prize by demonstrating their cooking skills?", answer: "MasterChef" },
+            { question: "Which UK reality show follows the lives and drama of people working in the fashion industry?", answer: "Made in Chelsea" },
+            { question: "What is the name of the UK reality TV show where contestants are paired up and try to win challenges while showcasing their chemistry?", answer: "Ex on the Beach" },
+            { question: "Which show features contestants taking part in extreme challenges and stunts to win a large cash prize?", answer: "Wipeout" },
+            { question: "What is the name of the show where celebrities participate in various competitive and entertaining tasks?", answer: "Celebrity Juice" },
+            { question: "Which UK reality show involves participants living together and engaging in a series of tasks and challenges?", answer: "The Real World" },
+            { question: "What is the name of the UK show where people are given the opportunity to live out their dreams and change their lives?", answer: "The Secret Millionaire" },
+            { question: "Which reality TV show involves a group of people living together and competing for a cash prize based on their social media popularity?", answer: "The Circle" },
+            { question: "What is the name of the UK show where people compete to become the next big business tycoon by pitching their ideas to a panel of investors?", answer: "Dragons' Den" },
+            { question: "Which show features contestants competing in a high-pressure environment to win a prestigious title in a particular field?", answer: "The Apprentice" },
+            { question: "What is the name of the UK reality show where participants live in a house and are isolated from the outside world while competing in various tasks?", answer: "Big Brother" },
+            { question: "Which UK reality show features individuals from various backgrounds sharing their personal lives and struggles in a documentary format?", answer: "The Real Housewives of Cheshire" },
+            { question: "What is the name of the reality show where celebrities are paired with professional dancers and compete in dance routines each week?", answer: "Strictly Come Dancing" },
+            { question: "Which reality TV show involves contestants battling against each other in a series of physical and mental challenges for a cash prize?", answer: "Survivor" },
+            { question: "What is the name of the UK reality show where participants take on various challenges and try to win a significant cash prize while being filmed?", answer: "The X Factor" },
+            { question: "Which show features a group of contestants living together and participating in various challenges to win a cash prize while their every move is captured on camera?", answer: "Big Brother" },
+            { question: "What is the name of the UK reality TV show where contestants are put through a series of challenges to test their physical and mental limits?", answer: "The Ultimate Fighter" },
+            { question: "Which reality show follows the lives of individuals who are trying to make it big in the entertainment industry?", answer: "The X Factor" },
+            { question: "What is the name of the UK reality show where participants are tested on their knowledge and skills in various disciplines?", answer: "The Chase" },
+            { question: "Which show involves a group of people living together and competing in various tasks while being filmed 24/7?", answer: "Big Brother" },
+            { question: "What is the name of the UK reality TV show where contestants compete to win a title in a specific field of expertise, such as cooking or design?", answer: "The Great British Bake Off" },
+            { question: "Which reality show features a group of contestants living in a house and competing for a cash prize based on their social media popularity?", answer: "The Circle" },
+            { question: "What is the name of the UK show where contestants compete in various challenges to become the best in their field?", answer: "The Apprentice" },
+            { question: "Which show involves celebrities taking part in various physical and mental challenges to win a cash prize?", answer: "I'm a Celebrity... Get Me Out of Here!" }
+        ];
+
+        let currentQuestionIndex = -1;
+
+        function getRandomQuestion() {
+            let newIndex;
+            do {
+                newIndex = Math.floor(Math.random() * questionsAndAnswers.length);
+            } while (newIndex === currentQuestionIndex);
+            currentQuestionIndex = newIndex;
+            return questionsAndAnswers[newIndex];
+        }
+
+        document.getElementById('quizImage').addEventListener('click', function() {
+            const { question, answer } = getRandomQuestion();
+            document.getElementById('question').innerText = question;
+            document.getElementById('answer').innerText = answer;
+        });
+    </script>
+</body>
+</html>
